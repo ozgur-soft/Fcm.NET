@@ -11,7 +11,7 @@ using System.Text.Json.Serialization;
 namespace FCM {
     public interface IFCM {
         void SetApiKey(string apikey);
-        FCM.Response Send(object payload);
+        FCM.Response Send(FCM.Request data);
     }
     public class FCM : IFCM {
         private string Endpoint { get; set; }
@@ -60,7 +60,7 @@ namespace FCM {
         public void SetApiKey(string apikey) {
             ApiKey = apikey;
         }
-        public Response Send(object data) {
+        public Response Send(Request data) {
             var http = new HttpClient() { DefaultRequestHeaders = { Authorization = new AuthenticationHeaderValue("key", ApiKey) } };
             var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(JsonString(data), Encoding.UTF8, MediaTypeNames.Application.Json) };
             var response = http.Send(request);
