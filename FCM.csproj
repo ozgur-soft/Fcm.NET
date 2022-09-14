@@ -6,6 +6,5 @@
     <Company>Özgürsoft</Company>
     <Copyright>2022 Özgürsoft</Copyright>
     <TargetFramework>net6.0</TargetFramework>
-    <OutputType>exe</OutputType>
   </PropertyGroup>
 </Project>
