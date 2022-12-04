@@ -61,16 +61,15 @@ namespace FCM {
             ApiKey = apikey;
         }
         public Response Send(Request data) {
-            var http = new HttpClient() { DefaultRequestHeaders = { Authorization = new AuthenticationHeaderValue("key", ApiKey) } };
-            var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(JsonString(data), Encoding.UTF8, MediaTypeNames.Application.Json) };
-            var response = http.Send(request);
-            var stream = response.Content.ReadAsStream();
+            using var http = new HttpClient() { DefaultRequestHeaders = { Authorization = new AuthenticationHeaderValue("key", ApiKey) } };
+            using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(JsonString(data), Encoding.UTF8, MediaTypeNames.Application.Json) };
+            using var response = http.Send(request);
+            using var stream = response.Content.ReadAsStream();
             if (response.IsSuccessStatusCode) {
                 return JsonSerializer.Deserialize<Response>(stream);
             } else {
-                using (var reader = new StreamReader(stream, Encoding.UTF8)) {
-                    Console.WriteLine(reader.ReadToEnd());
-                }
+                using var reader = new StreamReader(stream, Encoding.UTF8);
+                Console.WriteLine(reader.ReadToEnd());
             }
             return null;
         }
