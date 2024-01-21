@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<Version>1.1.0</Version>
-		<RepositoryUrl>https://github.com/ozgur-soft/FCM.NET</RepositoryUrl>
+		<RepositoryUrl>https://github.com/ozgur-soft/Fcm.NET</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<Authors>Özgür Yalçın</Authors>
 		<Company>Özgürsoft</Company>
