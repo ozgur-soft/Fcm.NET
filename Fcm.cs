@@ -1,5 +1,6 @@
 using System.Net.Http.Headers;
 using System.Net.Mime;
+using System.Reflection;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -60,14 +61,8 @@ namespace Fcm {
             using var http = new HttpClient() { DefaultRequestHeaders = { Authorization = new AuthenticationHeaderValue("key", ApiKey) } };
             using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(JsonString(data), Encoding.UTF8, MediaTypeNames.Application.Json) };
             using var response = http.Send(request);
-            using var stream = response.Content.ReadAsStream();
-            if (response.IsSuccessStatusCode) {
-                return JsonSerializer.Deserialize<Response>(stream);
-            } else {
-                using var reader = new StreamReader(stream, Encoding.UTF8);
-                Console.WriteLine(reader.ReadToEnd());
-            }
-            return null;
+            var result = JsonSerializer.Deserialize<Response>(response.Content.ReadAsStream());
+            return result;
         }
         public static string JsonString<T>(T data) where T : class {
             return JsonSerializer.Serialize(data, new JsonSerializerOptions { DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull, WriteIndented = true });
