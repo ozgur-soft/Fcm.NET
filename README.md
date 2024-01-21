@@ -1,4 +1,4 @@
-# FCM.NET
+# Fcm.NET
 Firebase Cloud Messaging (FCM) API with .NET
 
 # Installation
