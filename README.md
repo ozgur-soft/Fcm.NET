@@ -1,17 +1,17 @@
 # Fcm.NET
-Firebase Cloud Messaging (FCM) API with .NET
+Firebase Cloud Messaging (Fcm) API with .NET
 
 # Installation
 ```bash
-dotnet add package FCM --version 1.1.1
+dotnet add package Fcm --version 1.1.1
 ```
 
 # Usage
 ```c#
-namespace FCM {
+namespace Fcm {
     internal class Program {
         static void Main(string[] args) {
-            var fcm = new FCM();
+            var fcm = new Fcm();
             fcm.SetApiKey("api key");
             fcm.Send(new() { To = "device id", Notification = new() { Title = "title", Body = "body" } });
         }
