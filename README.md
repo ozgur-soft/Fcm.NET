@@ -3,7 +3,7 @@ Firebase Cloud Messaging (Fcm) API with .NET
 
 # Installation
 ```bash
-dotnet add package Fcm --version 1.1.1
+dotnet add package Fcm --version 1.2.0
 ```
 
 # Usage
