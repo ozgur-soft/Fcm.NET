@@ -12,8 +12,8 @@ namespace Fcm {
     internal class Program {
         static void Main(string[] args) {
             var fcm = new Fcm();
-            fcm.SetApiKey("api key");
             fcm.SetProjectId("project id");
+            fcm.SetApiKey("api key");
             fcm.Send(new() { Message = new() { Token = "device id", Notification = new() { Title = "title", Body = "body" } } });
         }
     }
