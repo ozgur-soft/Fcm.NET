@@ -7,34 +7,38 @@ using System.Text.Json.Serialization;
 namespace Fcm {
     public interface IFcm {
         void SetApiKey(string apikey);
+        void SetProjectId(string projectid);
         Fcm.Response Send(Fcm.Request data);
     }
     public class Fcm : IFcm {
-        private string Endpoint { get; set; }
         public string ApiKey { get; set; }
-        public Fcm() {
-            Endpoint = "https://fcm.googleapis.com/fcm/send";
-        }
+        public string ProjectId { get; set; }
         public class Request {
-            [JsonPropertyName("to")]
-            public string To { get; set; }
-            [JsonPropertyName("notification")]
-            public PayloadNotification Notification { get; set; }
-            [JsonPropertyName("data")]
-            public PayloadData Data { get; set; }
-            public class PayloadNotification {
-                [JsonPropertyName("title")]
-                public string Title { get; set; }
-                [JsonPropertyName("body")]
-                public string Body { get; set; }
-                [JsonPropertyName("icon")]
-                public string Icon { get; set; }
-                [JsonPropertyName("click_action")]
-                public string ClickAction { get; set; }
-            }
-            public class PayloadData {
-                [JsonPropertyName("url")]
-                public string Url { get; set; }
+            [JsonPropertyName("message")]
+            public _Message Message { get; set; }
+            public class _Message {
+                [JsonPropertyName("token")]
+                public string Token { get; set; }
+                [JsonPropertyName("topic")]
+                public string Topic { get; set; }
+                [JsonPropertyName("notification")]
+                public _Notification Notification { get; set; }
+                [JsonPropertyName("data")]
+                public _Data Data { get; set; }
+                public class _Notification {
+                    [JsonPropertyName("title")]
+                    public string Title { get; set; }
+                    [JsonPropertyName("body")]
+                    public string Body { get; set; }
+                    [JsonPropertyName("icon")]
+                    public string Icon { get; set; }
+                    [JsonPropertyName("click_action")]
+                    public string ClickAction { get; set; }
+                }
+                public class _Data {
+                    [JsonPropertyName("url")]
+                    public string Url { get; set; }
+                }
             }
         }
         public class Response {
@@ -56,9 +60,12 @@ namespace Fcm {
         public void SetApiKey(string apikey) {
             ApiKey = apikey;
         }
+        public void SetProjectId(string projectid) {
+            ProjectId = projectid;
+        }
         public Response Send(Request data) {
-            using var http = new HttpClient() { DefaultRequestHeaders = { Authorization = new AuthenticationHeaderValue("key", ApiKey) } };
-            using var request = new HttpRequestMessage(HttpMethod.Post, Endpoint) { Content = new StringContent(JsonString(data), Encoding.UTF8, MediaTypeNames.Application.Json) };
+            using var http = new HttpClient() { DefaultRequestHeaders = { Authorization = new AuthenticationHeaderValue("Bearer", ApiKey) } };
+            using var request = new HttpRequestMessage(HttpMethod.Post, "https://fcm.googleapis.com/v1/projects/" + ProjectId + "/messages:send") { Content = new StringContent(JsonString(data), Encoding.UTF8, MediaTypeNames.Application.Json) };
             using var response = http.Send(request);
             var result = JsonSerializer.Deserialize<Response>(response.Content.ReadAsStream());
             return result;
