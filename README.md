@@ -13,7 +13,8 @@ namespace Fcm {
         static void Main(string[] args) {
             var fcm = new Fcm();
             fcm.SetApiKey("api key");
-            fcm.Send(new() { To = "device id", Notification = new() { Title = "title", Body = "body" } });
+            fcm.SetProjectId("project id");
+            fcm.Send(new() { Message = new() { Token = "device id", Notification = new() { Title = "title", Body = "body" } } });
         }
     }
 }
